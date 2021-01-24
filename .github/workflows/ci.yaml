@@ -27,11 +27,9 @@ jobs:
         id: date
         run: echo "name=$(date -u +%Y-%m-%dT%H%M%SZ)" >> $GITHUB_ENV
       - name: Test with environment variables
-        run: echo $TAG_NAME - $RELEASE_NAME - $repo_name
+        run: echo $TAG_NAME
         env:
           TAG_NAME: nightly-tag-${{ env.tag }}
-          RELEASE_NAME: nightly-release-${{ env.tag }}
-          repo_name: ${{ github.repository.name }}
       - name: Checkout code
         uses: actions/checkout@v2
       - name: Create Release
@@ -45,7 +43,8 @@ jobs:
           draft: false
           prerelease: false  
       - name: Dump github context
-        run:   echo "$GITHUB_CONTEXT"
+        run:   echo "$GITHUB_CONTEXT $REPO_NAME"
         shell: bash
         env:
-          GITHUB_CONTEXT: ${{ toJson(github) }} 
+          GITHUB_CONTEXT: ${{ toJson(github) }}
+          REPO_NAME: ${{ github.repository.name }}  
