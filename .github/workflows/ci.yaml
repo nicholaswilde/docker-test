@@ -46,5 +46,5 @@ jobs:
         run:   echo "$GITHUB_CONTEXT $REPO_NAME"
         shell: bash
         env:
-          GITHUB_CONTEXT: ${{ toJson(github) }}
-          REPO_NAME: ${{ github.repository.name }}  
+          #GITHUB_CONTEXT: ${{ toJson(github) }}
+          REPO_NAME: ${{ github.event.repository.name }}  
