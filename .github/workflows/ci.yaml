@@ -1,0 +1,35 @@
+---
+name: ci
+on:
+  workflow_dispatch:
+    # Inputs the workflow accepts.
+    inputs:
+      version:
+        # Friendly description to be shown in the UI instead of 'name'
+        description: 'Version'
+        # Default value if no value is explicitly provided
+        default: '2.3.0.2-ls1'
+        # Input has to be provided for the workflow to run
+        required: true
+      ls:
+        description: 'ls'
+        default: 'ls-01'
+        required: true
+
+jobs:
+  build:
+    name: Example
+    runs-on: ubuntu-latest
+    steps:
+      - name: Get current date
+        id: date
+        run: echo "name=$(date +'%Y-%m-%d')" >> $GITHUB_ENV
+      - name: Test with environment variables
+        run: echo $TAG_NAME - $RELEASE_NAME
+        env:
+          TAG_NAME: nightly-tag-${{ steps.date.outputs.date }}
+          RELEASE_NAME: nightly-release-${{ steps.date.outputs.date }}
+      - name: Test with input
+        uses: actions/hello-world-docker-action@master
+        with:
+          who-to-greet: Mona-the-Octocat-${{ steps.date.outputs.date }}
